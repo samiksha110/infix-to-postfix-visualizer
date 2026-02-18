@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Infix to Postfix & Expression Tree</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Infix to Postfix Conversion</h1>
+
+    <!-- INPUT -->
+    <div class="card">
+        <input type="text" id="infixInput" placeholder="Enter infix expression (A+B*C)">
+        <br><br>
+        <button onclick="convert()">Convert</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h2>Postfix Expression</h2>
+        <p id="postfixOutput"></p>
+
+        <h3>Tree Traversals</h3>
+        <p><b>Inorder:</b> <span id="inorder"></span></p>
+        <p><b>Preorder:</b> <span id="preorder"></span></p>
+        <p><b>Postorder:</b> <span id="postorder"></span></p>
+    </div>
+
+    <!-- STACK VISUALIZATION -->
+    <div class="card">
+        <h2>Stack Visualization (Infix → Postfix)</h2>
+        <p><b>Current Symbol:</b> <span id="currentChar">-</span></p>
+        <div id="stackBox"></div>
+    <p id="stackDone" style="color: green; font-weight: bold; display: none;">
+          ✓ Stack operations completed
+    </p>
+
+    </div>
+
+    <!-- TREE -->
+    <div class="card">
+        <h2>Expression Tree</h2>
+        <canvas id="treeCanvas" width="900" height="450"></canvas>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(180deg, #f8fafc, #e2e8f0);
+    color: #0f172a;
+    min-height: 100vh;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 0;
+}
+
+/* ===== HEADINGS ===== */
+h1 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 2.4rem;
+    color: #0f172a;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #020617;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #1e40af;
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== INPUT ===== */
+input {
+    width: 340px;
+    max-width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #94a3b8;
+    outline: none;
+}
+
+input::placeholder {
+    color: #64748b;
+}
+
+/* ===== BUTTON ===== */
+button {
+    margin-top: 18px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px 28px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* ===== TEXT OUTPUT ===== */
+#postfixOutput {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1d4ed8;
+    margin-top: 10px;
+}
+
+p {
+    line-height: 1.6;
+}
+
+/* ===== STACK VISUALIZATION ===== */
+#stackBox {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+#stackBox div {
+    padding: 10px 16px;
+    min-width: 42px;
+    text-align: center;
+    border-radius: 8px;
+    background: #fde68a;
+    color: #111827;
+    font-weight: bold;
+    border: 1px solid #f59e0b;
+}
+
+/* ===== STATUS TEXT ===== */
+#currentChar {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+#stackDone {
+    margin-top: 12px;
+    color: #16a34a;
+    font-weight: bold;
+}
+
+/* ===== CANVAS (TREE) ===== */
+canvas {
+    display: block;
+    margin: 25px auto 0;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 2px solid #1e293b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    input {
+        width: 100%;
+    }
+}
