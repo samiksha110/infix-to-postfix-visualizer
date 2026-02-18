@@ -63,7 +63,6 @@ GitHub Pages (for hosting)
 
 📂 Project Structure
 infix-to-postfix-visualizer/
-│
 
 ├── index.html   # Main HTML file
 
