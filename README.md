@@ -82,8 +82,7 @@ Enter an infix expression and click Convert
 The project is hosted using GitHub Pages:
 
 👉 Live Demo:
-
-https://samiksha110/infix-to-postfix-visualizer/
+https://github.com/samiksha110/infix-to-postfix-visualizer
 
 🧪 Sample Test Cases
 
