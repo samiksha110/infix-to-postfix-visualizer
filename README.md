@@ -65,8 +65,11 @@ GitHub Pages (for hosting)
 infix-to-postfix-visualizer/
 │
 ├── index.html   # Main HTML file
+
 ├── script.js    # Logic & Visualization
+
 ├── style.css    # Styling (Light Theme)
+
 
 ▶️ How to Run the Project
 🔹 Option 1: Run Locally
@@ -88,9 +91,13 @@ https://github.com/samiksha110/infix-to-postfix-visualizer
 
 Infix Expression	Postfix Expression
 A+B	AB+
+
 A+B*C	ABC*+
+
 (A+B)*C	AB+C*
+
 (A+B)*(C-D)	AB+CD-*
+
 ((A+B)*C)-(D/E)	AB+C*DE/-
 
 
@@ -106,9 +113,13 @@ Traversals relate to different expression forms
 👩‍💻 By : 
 
 Name: Samiksha .D. Lonkar
+
 Course: FY MCA - E
+
 Subject: Data Structures
+
 Institution: MIT-WPU , Pune
+
 
 📄 License
 
