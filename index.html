@@ -2,42 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Infix to Postfix & Expression Tree</title>
+    <title>Infix → Postfix Visualizer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-
-    <h1>Infix to Postfix Conversion</h1>
+    <h1>Infix → Postfix Visualizer</h1>
+    <p class="subtitle">Stack-based conversion with Expression Tree & Traversals</p>
 
     <!-- INPUT -->
     <div class="card">
         <input type="text" id="infixInput" placeholder="Enter infix expression (A+B*C)">
-        <br><br>
         <button onclick="convert()">Convert</button>
+        <p class="status">Status: <span id="statusText">Idle</span></p>
+
+        <label>Speed</label>
+        <input type="range" min="100" max="1200" value="400" id="speedSlider" class="slider">
     </div>
 
-    <!-- OUTPUT -->
+    <!-- STACK -->
     <div class="card">
-        <h2>Postfix Expression</h2>
-        <p id="postfixOutput"></p>
+        <h2>Stack Operations</h2>
+        <p class="current">Current Symbol</p>
+        <div id="currentChar" class="current-symbol">-</div>
+        <div id="stackBox"></div>
+        <p id="stackDone">✓ Stack processing completed</p>
+    </div>
+
+    <!-- RESULT -->
+    <div class="card">
+        <h2>Conversion Result</h2>
+        <div id="postfixOutput">—</div>
 
         <h3>Tree Traversals</h3>
-        <p><b>Inorder:</b> <span id="inorder"></span></p>
-        <p><b>Preorder:</b> <span id="preorder"></span></p>
-        <p><b>Postorder:</b> <span id="postorder"></span></p>
+        <div class="traversals">
+            <p><b>Inorder</b><span id="inorder"></span></p>
+            <p><b>Preorder</b><span id="preorder"></span></p>
+            <p><b>Postorder</b><span id="postorder"></span></p>
+        </div>
     </div>
 
-    <!-- STACK VISUALIZATION -->
+    <!-- STEPS -->
     <div class="card">
-        <h2>Stack Visualization (Infix → Postfix)</h2>
-        <p><b>Current Symbol:</b> <span id="currentChar">-</span></p>
-        <div id="stackBox"></div>
-    <p id="stackDone" style="color: green; font-weight: bold; display: none;">
-          ✓ Stack operations completed
-    </p>
-
+        <h2>Step-by-Step Explanation</h2>
+        <div id="stepsBox" class="steps-box">
+            <p class="step muted">Click Convert to begin explanation</p>
+        </div>
     </div>
 
     <!-- TREE -->
@@ -45,7 +56,6 @@
         <h2>Expression Tree</h2>
         <canvas id="treeCanvas" width="900" height="450"></canvas>
     </div>
-
 </div>
 
 <script src="script.js"></script>

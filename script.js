@@ -1,27 +1,38 @@
-// ================= PRECEDENCE =================
+let speed = 400;
+
+document.getElementById("speedSlider").addEventListener("input", e => {
+    speed = e.target.value;
+});
+
+function delay(ms) {
+    return new Promise(r => setTimeout(r, ms));
+}
+
 function precedence(op) {
     if (op === '+' || op === '-') return 1;
     if (op === '*' || op === '/') return 2;
     return 0;
 }
 
-// ================= DELAY =================
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// ================= STACK VISUAL =================
 function updateStack(stack) {
     const box = document.getElementById("stackBox");
     box.innerHTML = "";
-    stack.slice().reverse().forEach(el => {
+    stack.slice().reverse().forEach(v => {
         const d = document.createElement("div");
-        d.innerText = el;
+        d.innerText = v;
         box.appendChild(d);
     });
 }
 
-// ================= INFIX → POSTFIX (ANIMATED) =================
+function addStep(msg) {
+    const box = document.getElementById("stepsBox");
+    const p = document.createElement("p");
+    p.className = "step";
+    p.innerHTML = msg;
+    box.appendChild(p);
+    box.scrollTop = box.scrollHeight;
+}
+
 async function infixToPostfix(infix) {
     let stack = [];
     let postfix = "";
@@ -31,154 +42,126 @@ async function infixToPostfix(infix) {
 
         if (/[A-Za-z0-9]/.test(ch)) {
             postfix += ch;
+            addStep(`Operand <b>${ch}</b> added to postfix`);
         }
         else if (ch === '(') {
             stack.push(ch);
+            addStep(`Opening bracket pushed to stack`);
         }
         else if (ch === ')') {
-            while (stack.length && stack[stack.length - 1] !== '(') {
+            addStep(`Closing bracket → pop until (`);
+            while (stack.length && stack.at(-1) !== '(') {
                 postfix += stack.pop();
                 updateStack(stack);
-                await delay(400);
+                await delay(speed);
             }
             stack.pop();
         }
         else {
-            while (
-                stack.length &&
-                precedence(stack[stack.length - 1]) >= precedence(ch)
-            ) {
+            addStep(`Operator <b>${ch}</b> checking precedence`);
+            while (stack.length && precedence(stack.at(-1)) >= precedence(ch)) {
                 postfix += stack.pop();
                 updateStack(stack);
-                await delay(400);
+                await delay(speed);
             }
             stack.push(ch);
         }
 
         updateStack(stack);
-        await delay(400);
+        await delay(speed);
     }
 
     while (stack.length) {
         postfix += stack.pop();
         updateStack(stack);
-        await delay(400);
+        await delay(speed);
     }
 
     document.getElementById("currentChar").innerText = "-";
-    document.getElementById("stackDone").style.display = "block";
-
     return postfix;
 }
 
-// ================= TREE NODE =================
-class TreeNode {
-    constructor(val) {
-        this.val = val;
-        this.left = null;
-        this.right = null;
+class Node {
+    constructor(v) {
+        this.v = v;
+        this.l = null;
+        this.r = null;
     }
 }
 
-// ================= BUILD TREE =================
-function buildExpressionTree(postfix) {
-    let stack = [];
+function buildTree(postfix) {
+    const s = [];
     for (let ch of postfix) {
-        if (/[A-Za-z0-9]/.test(ch)) {
-            stack.push(new TreeNode(ch));
-        } else {
-            let node = new TreeNode(ch);
-            node.right = stack.pop();
-            node.left = stack.pop();
-            stack.push(node);
+        if (/[A-Za-z0-9]/.test(ch)) s.push(new Node(ch));
+        else {
+            const n = new Node(ch);
+            n.r = s.pop();
+            n.l = s.pop();
+            s.push(n);
         }
     }
-    return stack.pop();
+    return s.pop();
 }
 
-// ================= TRAVERSALS =================
-function inorder(n) {
-    if (!n) return "";
-    return inorder(n.left) + n.val + inorder(n.right);
-}
-function preorder(n) {
-    if (!n) return "";
-    return n.val + preorder(n.left) + preorder(n.right);
-}
-function postorder(n) {
-    if (!n) return "";
-    return postorder(n.left) + postorder(n.right) + n.val;
-}
+function inorder(n){ return n ? inorder(n.l)+n.v+inorder(n.r) : ""; }
+function preorder(n){ return n ? n.v+preorder(n.l)+preorder(n.r) : ""; }
+function postorder(n){ return n ? postorder(n.l)+postorder(n.r)+n.v : ""; }
 
-// ================= DRAW TREE (FIXED SIZE) =================
-function drawTree(ctx, node, x, y, gap) {
-    if (!node) return;
+function drawTree(ctx, n, x, y, g) {
+    if (!n) return;
 
-    const RADIUS = 28;
-    const FONT_SIZE = 18;
-
-    // node
-    ctx.beginPath();
-    ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
-    ctx.fillStyle = "#cfefff";
-    ctx.fill();
+    ctx.strokeStyle = "#fb923c";
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "#020617";
+
+    ctx.beginPath();
+    ctx.arc(x,y,22,0,Math.PI*2);
+    ctx.fillStyle="#fed7aa";
+    ctx.fill();
     ctx.stroke();
 
-    // text
-    ctx.fillStyle = "#020617";
-    ctx.font = `bold ${FONT_SIZE}px Segoe UI`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(node.val, x, y);
+    ctx.fillStyle="#020617";
+    ctx.font="16px Segoe UI";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.fillText(n.v,x,y);
 
-    // connections
-    ctx.strokeStyle = "#020617";
-    ctx.lineWidth = 2.5;
-
-    if (node.left) {
+    if (n.l) {
         ctx.beginPath();
-        ctx.moveTo(x, y + RADIUS);
-        ctx.lineTo(x - gap, y + 90);
+        ctx.moveTo(x,y+22);
+        ctx.lineTo(x-g,y+80);
         ctx.stroke();
-        drawTree(ctx, node.left, x - gap, y + 120, gap / 2);
+        drawTree(ctx,n.l,x-g,y+100,g/2);
     }
-
-    if (node.right) {
+    if (n.r) {
         ctx.beginPath();
-        ctx.moveTo(x, y + RADIUS);
-        ctx.lineTo(x + gap, y + 90);
+        ctx.moveTo(x,y+22);
+        ctx.lineTo(x+g,y+80);
         ctx.stroke();
-        drawTree(ctx, node.right, x + gap, y + 120, gap / 2);
+        drawTree(ctx,n.r,x+g,y+100,g/2);
     }
 }
 
-// ================= MAIN =================
 async function convert() {
-    document.getElementById("stackBox").innerHTML = "";
-    document.getElementById("postfixOutput").innerText = "";
-    document.getElementById("currentChar").innerText = "-";
-    document.getElementById("stackDone").style.display = "none";
+    const infix = document.getElementById("infixInput").value.replace(/\s+/g,"");
+    if (!infix) return alert("Enter expression");
 
-    let infix = document.getElementById("infixInput").value.replace(/\s+/g, "");
-    if (!infix) {
-        alert("Enter an infix expression");
-        return;
-    }
+    document.getElementById("statusText").innerText = "Processing";
+    document.getElementById("stackDone").style.display="none";
+    document.getElementById("stepsBox").innerHTML="";
 
-    let postfix = await infixToPostfix(infix);
+    const postfix = await infixToPostfix(infix);
     document.getElementById("postfixOutput").innerText = postfix;
 
-    let root = buildExpressionTree(postfix);
-
+    const root = buildTree(postfix);
     document.getElementById("inorder").innerText = inorder(root);
     document.getElementById("preorder").innerText = preorder(root);
     document.getElementById("postorder").innerText = postorder(root);
 
-    let canvas = document.getElementById("treeCanvas");
-    let ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const c = document.getElementById("treeCanvas");
+    const ctx = c.getContext("2d");
+    ctx.clearRect(0,0,c.width,c.height);
+    drawTree(ctx, root, c.width/2, 40, 180);
 
-    drawTree(ctx, root, canvas.width / 2, 50, 200);
+    document.getElementById("statusText").innerText = "Done";
+    document.getElementById("stackDone").style.display="block";
 }
